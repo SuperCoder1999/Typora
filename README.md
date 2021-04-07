@@ -1,2 +1,0 @@
-# Typora
-Typora_NoteBook
