@@ -202,7 +202,7 @@ int main()
 
 }
 
-3. #define定义的标识符常量，如：#define MAX = 10;（可以用于数组中a[MAX]）（defin称为预处理指令）
+3. #define定义的标识符常量，如：#define MAX  10（可以用于数组中a[MAX]）（defin称为预处理指令）
 
 4. 枚举常量（枚举关键字enum）
 
