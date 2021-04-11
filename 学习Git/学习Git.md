@@ -21,8 +21,8 @@
 - 配置用户名、邮箱【一次即可】
 
 ```
-git config --global user.email "邮箱"--引号可省略
-git config --global user.name "用户名"--引号可省略
+git config --global user.email "邮箱"--引号、横线可省略
+git config --global user.name "用户名"--引号、横线可省略
 ```
 
 ### 具体操作
@@ -128,7 +128,7 @@ git config --global user.name "用户名"--引号可省略
 
 图片中checkout的文字说明是：对修改的文件有效
 
-- 举例git checkout 从工作区红色返回以控制状态
+- 举例git checkout 从工作区红色返回已控制状态
 
   ```
   git checkout --文件名
