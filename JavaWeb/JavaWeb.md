@@ -148,6 +148,19 @@
 
 1. 作用：
    1. 静态页面 - html
-   2. 动态页面 - serverlet
-   3. 12
+   2. 动态页面 - servlet
+   3. 1
+
+----
+
+#### Servlet编程需要的网站
+
+1. Servlet[3.1](https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api)版本
+2. [mysql connector 5.1版本](https://mvnrepository.com/artifact/mysql/mysql-connector-java)
+
+#### webapp项目创建步骤
+
+1. 创建maven项目
+2. 配置 pom.xml  - 在Maven网站中查找配置 
+3. 数据库设计
 
