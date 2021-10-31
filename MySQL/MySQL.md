@@ -22,7 +22,7 @@
 ## 数据表操作
 
 1. create table [表名] (列名 数据类型);   创建表
-2. desc [表名]; 查看表内容
+2. desc [表名]; 查看表结构
 3. show tables; 查看表单
 4. drop table [表名];  删除表
 
