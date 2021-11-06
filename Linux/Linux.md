@@ -41,7 +41,7 @@ root用户：root
 8. who am i / whoami ：查看当前登录的用户信息。
 9. pwd ：当处于A文件下，未进入A文件下的B文件时，则显示当前路径为/home/A<img src="Linux.assets/image-20210921100258787.png" alt="image-20210921100258787" style="zoom:50%;" />
 10. 问题：切换目录的时候 cd /home/tom 最后需不需要加"/" ? cd /home/tom/  - 我自己的理解：加“/”：可以辨别是文件夹还是文件
-11. rm ：可以用于删除touch创建的文件
+11. rm ：可以用于删除touch创建的文件 选项-r是递归删除、-f是强制删除 可以对多个文件进行操作,多个文件之间用空格隔开
 12. cd ：可以同时操作多个文件
     ![image-20210921104740159](Linux.assets/image-20210921104740159.png)
 13. mv ：将一个文件移动到当前文件，但是改变其名称，就是重命名操作。
@@ -59,6 +59,7 @@ root用户：root
 24. chmod ：第二种方式通过数字变更权限，不能改变单个组、用户的权限，即不能 o-2 。只能全部赋值 chmod 644 apple.txt
 25. 可执行文件的运行： ./my.sh。在crontab -e编辑的时候，执行可执行文件的命令：
     */1 * * * * /home/supercoder/crond/my.sh
+26. alt + enter：全屏
 
 # Vim命令
 
