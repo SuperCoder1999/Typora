@@ -229,3 +229,4 @@
 
 1. particial gc ： 
 
+1
