@@ -100,84 +100,104 @@ SQL语句中的多行注释采用 /*…*/
     `name` verchar(20),
     ) character set utf8 collate utf8_bin engine default;
     
-12. 无符号整数类型  INT UNSIGNED
+12. drop table table_name;
+
+13. 无符号整数类型  INT UNSIGNED
 
     1. tinyint 1
-
     2. smallint 2
-
     3. mediumint 3
-
     4. int 4
-
     5. bigint 8
-
     6. bit(1~64) 默认1
-
     7. float 4
-
     8. double 8
-
     9. decimal(M,D) M默认10  D默认 0 M：1-65 D：0-30
-
     10. char(size)  size:1-255
-
     11. varchar(size)  size:1-2^16-1字节 / 对应字符集 (如果字符集是utf8，而存入的大多数字符是一个字符的英文，那么varchar的最大空间并没有占满)
-
     12. blob 二进制  可以定义其大小  最大 2^16-1字节
-
     13. text 最大2^16-1字节，longtext 2^32-1字节
-
     14. char的查询速度大于varchar
 
-    15. 修改表：
+14. 修改表：
 
-        1. 添加列 
+    1. 添加列 
 
-           ~~~sql
-           alter table table_name 
-           add col_name datatype [default expr]
-           after other_col;
-           ~~~
+       ~~~sql
+       alter table table_name 
+       add col_name datatype [default expr]
+       after other_col;
+       ~~~
 
-        2. 修改列
+    2. 修改列
 
-           ~~~sql
-           alter table table_name
-           modify col_name datatype [default expr];
-           ~~~
+       ~~~sql
+       alter table table_name
+       modify col_name datatype [default expr];
+       ~~~
 
-        3. 删除列
+    3. 删除列
 
-           ~~~sql
-           alter table table_name
-           drop col_name;
-           ~~~
+       ~~~sql
+       alter table table_name
+       drop col_name;
+       ~~~
 
-        4. 查看表结构
+    4. 查看表结构
 
-           ~~~sql
-           desc table_name;
-           ~~~
+       ~~~sql
+       desc table_name;
+       ~~~
 
-        5. 修改表名
+    5. 修改表名
 
-           ~~~sql
-           rename table table_name to new_table_name;
-           ~~~
+       ~~~sql
+       rename table table_name to new_table_name;
+       ~~~
 
-        6. 修改表字符集
+    6. 修改表字符集
 
-           ~~~sql
-           alter table table_name charset utf8;
-           ~~~
+       ~~~sql
+       alter table table_name charset utf8;
+       ~~~
 
-        7. 修改列名
+    7. 修改列名
 
-           ~~~sql
-           alter table table_name change col_name new_col_name datatype [default expr];
-           -- 感觉这不像是修改列名，更像是删除重新创建一个列，要不然也不会规定 type。如果不规定type呢？
-           ~~~
+       ~~~sql
+       alter table table_name change col_name new_col_name datatype [default expr];
+       -- 感觉这不像是修改列名，更像是删除重新创建一个列，要不然也不会规定 type。如果不规定type呢？
+       ~~~
 
-    16. 
+15. insert into table_name(col1, col2)
+
+    values(value1, value2), (), ();
+
+16. update table_name
+    set col_name=value, col_name=value + 10
+
+    where expr ;
+
+17. 规则：只有在创建/删除 database、table 时才会有 table。或许因为这两个命令是共享的，需要区分。
+
+18. delete from table_name where expr;
+
+19. select distinct col_name from table_name;
+
+20. select (math+english) as total from table_name;
+
+21. select * from name like '韩%';
+
+22. select * from id between 10 and 90;
+
+23. select * from student order by col_name desc/asc;
+
+24. select count(col_name) as '计数器' from student where expr;
+
+25. select sum(col_name) '求和' from student where expr;
+
+26. select avg(col_name) as '平均'
+
+27. select max(col_name) as 
+
+28. select min(col_name) as 1
 
