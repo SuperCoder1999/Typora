@@ -70,3 +70,114 @@ SQL语句中的多行注释采用 /*…*/
    3. 啥是b树，有什么优势
    4. 什么是b+树，有什么优势
 5. 其他
+
+
+
+# 复习
+
+1. mysql -h host -P 3306 -u root -pN331150871;
+
+2. **create database if not exists hsp_db01 character set utf8 collate utf8_bin;**
+
+3. **general_ci 不区分  utf8_bin 区分**
+
+4. show databases;
+
+5. **show create database hsp_db01;**
+
+6. **drop database if exists hsp_db01;** 
+
+7. **反引号** 区分关键字 
+
+8. **datadump -u root -pN331150871 -B hsp_db01 hsp_db02 > /home/exercise/hsp_bf.sql;**
+
+9. (只能在dos界面进行操作) source /home/exercise/hsp_bf.sql;
+
+10. (需要进入任意一个数据库中)  datadump -u root -pN331150871 hsp_db01 name user > /home/exercise/hsp_bftable.sql;
+
+11. create table `user` ( 
+    int id,
+    `name` verchar(20),
+    ) character set utf8 collate utf8_bin engine default;
+    
+12. 无符号整数类型  INT UNSIGNED
+
+    1. tinyint 1
+
+    2. smallint 2
+
+    3. mediumint 3
+
+    4. int 4
+
+    5. bigint 8
+
+    6. bit(1~64) 默认1
+
+    7. float 4
+
+    8. double 8
+
+    9. decimal(M,D) M默认10  D默认 0 M：1-65 D：0-30
+
+    10. char(size)  size:1-255
+
+    11. varchar(size)  size:1-2^16-1字节 / 对应字符集 (如果字符集是utf8，而存入的大多数字符是一个字符的英文，那么varchar的最大空间并没有占满)
+
+    12. blob 二进制  可以定义其大小  最大 2^16-1字节
+
+    13. text 最大2^16-1字节，longtext 2^32-1字节
+
+    14. char的查询速度大于varchar
+
+    15. 修改表：
+
+        1. 添加列 
+
+           ~~~sql
+           alter table table_name 
+           add col_name datatype [default expr]
+           after other_col;
+           ~~~
+
+        2. 修改列
+
+           ~~~sql
+           alter table table_name
+           modify col_name datatype [default expr];
+           ~~~
+
+        3. 删除列
+
+           ~~~sql
+           alter table table_name
+           drop col_name;
+           ~~~
+
+        4. 查看表结构
+
+           ~~~sql
+           desc table_name;
+           ~~~
+
+        5. 修改表名
+
+           ~~~sql
+           rename table table_name to new_table_name;
+           ~~~
+
+        6. 修改表字符集
+
+           ~~~sql
+           alter table table_name charset utf8;
+           ~~~
+
+        7. 修改列名
+
+           ~~~sql
+           alter table table_name change col_name new_col_name datatype [default expr];
+           -- 感觉这不像是修改列名，更像是删除重新创建一个列，要不然也不会规定 type。如果不规定type呢？
+           ~~~
+
+    16. 
+
