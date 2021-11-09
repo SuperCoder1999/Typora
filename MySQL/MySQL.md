@@ -191,13 +191,123 @@ SQL语句中的多行注释采用 /*…*/
 
 23. select * from student order by col_name desc/asc;
 
-24. select count(col_name) as '计数器' from student where expr;
+24. 合计 / 统计函数
 
-25. select sum(col_name) '求和' from student where expr;
+    1. select count(col_name) as '计数器' from student where expr;
+    2. select sum(col_name) '求和' from student where expr;
+    3. select avg(col_name) as '平均'
+    4. select max(col_name) as 
+    5. select min(col_name) as 1
 
-26. select avg(col_name) as '平均'
+25. select * from table_name group by col1, col2 having expr;
 
-27. select max(col_name) as 
+26. 字符串相关函数
 
-28. select min(col_name) as 1
+    1. 字符集：select charset(str) from table_name;
+    2. 拼接: concat(str1, str2, ....)
+    3. 判断存在: instr(str, str1)
+    4. 转换大小写: lcase(str)  ucase(str)
+    5. 从左、右取: left(str, num)  right(str, num)
+    6. 长度：length(str)
+    7. 替换：replace(str, search_str, replace_str);
+    8. 比较：strcap(string1, string2);
+    9. 截取：substring(str, head, length);
+    10. 去空格：ltrim(str)  rtrim(str)  trim(str)
+
+27. crtl+f  在 参考手册中 查找 字符串
+
+28. 数学相关函数
+
+    1. 绝对值：abs(num) 
+    2. 二进制：bin(num)
+    3. 向上取整：ceiling(num)
+    4. 进制转换：conv(num, from, to)
+    5. 保留小数位数：**format(num, length)**
+    6. 十六进制：hex(num)
+    7. 最小值：**least(num1, num2, num3)**
+    8. 取余：mod(num, deno)
+    9. 随机数：rand([seed])
+
+29. 时间相关函数
+
+    1. 当前日期：current_date()
+    2. 当前时间：current_time()
+    3. 当前时间戳：current_timestamp();
+    4. 当前时间：now()
+    5. 提取日期：date(datetime);
+    6. 延长时间：**date_add(time, INTERVAL num type)**
+    7. 缩短时间：**date_sub(time, INTERVAL num type)**
+    8. 相差天数：datediff(time1, time2)
+    9. 当差时间：timediff(time1, time2)
+    10. 提取年数 、月数、日：year(time)  month(time)  day(time)
+    11. 返回时间戳：unix_timestamp()
+    12. 格式化时间戳：from_unixtime(time, '%Y-%m-%d %H:%i:%s')
+
+30. 加密和系统函数
+
+    1. 查询用户：user()
+    2. 查询使用的数据库：**datebase()**
+    3. MD5加密：md('123')  
+       1. 用户密码管理：
+       2. 先创建 char(32) not null default '';
+       3. 插入 insert users values('hsp', MD('password'));
+       4. 登录时的查找：select * from users where name='hsp' and MD('输入的密码')=MD('password');
+    4. password加密：password('hsp');
+
+31. 流程控制函数
+
+    1. if：if(expr, expr_true, expr_false)
+
+    2. ifnull：ifnull(主要的， 备用)
+
+    3. case when expr1 then expr2 
+
+       when expr3 then expr4
+
+       else expr5
+
+       end
+
+    4. 比较运算符可以比较时间：current_date > '2021-01-19'  
+
+    5. like的 %  _  ：name='韩%
+
+       name='_顺%‘
+
+    6. is null：name is null
+
+32. 表结构：desc table_name
+
+33. 多条件的order by：order by col1 desc , col2 desc; 
+
+34. 分页查询：limit s, n            limit  n  offset   s;   --  s从0开始
+
+    1. 公式 ：limit (第n页-1) * 每页数据量  ，每页数量 
+
+35. group by job;
+
+36. 命令的顺序 ：
+
+    1. select col from table_name
+       group by col
+
+       having expr
+
+       order by col
+
+       limit s, n;
+
+    2. having 必须是在 group 和 select 形成的临时表中进行 筛选
+
+    3. order by 可以是任意列名
+
+    4. limit 也是在临时表的基础上分页
+
+37. 笛卡尔积：select * from table1, table2;
+
+38. 笛卡尔积筛选规律：筛选条件 比 表的数量 少一个
+
+39. 
+
+
 
