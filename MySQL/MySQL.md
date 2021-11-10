@@ -307,7 +307,101 @@ SQL语句中的多行注释采用 /*…*/
 
 38. 笛卡尔积筛选规律：筛选条件 比 表的数量 少一个
 
-39. 
+39. 单列子查询
 
+    1. 单行子查询：select * from emp where deptno=(select deptno from emp where ename='smith');
+    2. 多行子查询：select * from emp where job in (select job from emp where ename='smith');
 
+40. 多列子查询：select * from emp where (ename, deptno)=(select ename, deptno from emp where ename='smith');
 
+41. 子查询作为临时表：
+    select temp.*, dept.dname
+
+    from dept, (
+
+    select count(*), deptno from emp
+
+    where deptno='10') as temp
+
+    where temp.deptno=dept.deptno;
+
+42. 多表查询 all = max()  any=min()
+    select * from where sal > all (select sal from emp);
+
+    select * from where sal > (select MAX(sal) from emp);
+
+43. 蠕虫复制：
+
+    1. 复制别人  insert into  table_name(col1, col2) select col1, col2 from table_name_from;
+    2. 自我复制：insert into table_name   select * from table_name_from;
+    
+44. 去重：
+
+    1. 先创建一个临时表temp
+    2. select into temp (select distinct * from table_name);
+    3. 清空 table_name
+    4. 将temp表内容转移到table_name中，将temp表删除
+
+45. 复制表结构：create table table_name like table_name_from;
+
+46. 合并查询：select ename, sal from table1 union all select ename, sal from table2; union all - 不去重  union - 去重
+
+47. 表外连接
+
+    1. 左外连接 ：select ename, sal from emp left join dept on ename='smith';
+    2. 右连接：select ename, sal from emp right join dept on ename='smith';
+
+48. 主键约束：
+
+    1. id int primary key,
+    2. ( primary key(id, ename) );
+
+49. 非空约束：not null
+
+50. 唯一约束：unique   (null可以有多个)
+
+51. 外键 约束：foreign key(col_name) references table_name(col_name);
+
+52. check：sql语法支持，但是没有作用。check(expr) 
+
+53. 自增长(一般搭配unique\primary key使用)：id int primary key auto_increment;
+
+    1. 插入有三种方式
+    2. 修改自增长起始值：alter table table_name auto_increment=100;
+
+54. 索引
+
+    1. 主键索引、唯一索引都可以通过创建表的时候，一起声明
+    2. 创建索引
+       1. 创建普通(唯一)索引:
+          1. create [unique] index index_name on table_name(col);
+          2. alter table table_name add index [index_name] col_name;
+       2. 创建主键索引：alter table table_name add primary key(col_name);
+    3. 删除索引
+       1. 删除普通(唯一)索引 - *唯一索引的删除方式不知道*
+          1. drop index index_name on table_name;
+          2. alter table table_name drop index index_name;
+       2. 删除主键索引：alter table table_name drop primary key;
+    4. 查询索引：
+       1. show index(es) from table_name;
+       2. show keys from table_name;
+       3. desc table_name;
+    5. 一般什么情况下使用索引：
+       1. 查询频繁
+       2. 增删改 不频繁
+       3. where 语句中常用到
+       4. 重复率低的字段
+
+55. 事务
+
+    1. 事务是什么：事务用于保证数据的一致性，它由dml语句组成，该组的dml语句要么全部成功执行，要么全部失败。
+    2. 事务的命令：
+       1. 开启事务：start transcation; / set autocommit=off;
+       2. 设置保存点：savepoint a;
+       3. 回退事务：rollback a;
+       4. 返回事务开启状态：rollback;
+       5. 提交事务：commit;
+
+56. 全文索引要求存储引擎：MyISAM 事务要求引擎：InnoDB
+
+57. 
