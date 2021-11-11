@@ -83,7 +83,7 @@ SQL语句中的多行注释采用 /*…*/
 
 4. show databases;
 
-5. **show create database hsp_db01;**
+5. 显示创建数据库的命令：**show create database database_name;**
 
 6. **drop database if exists hsp_db01;** 
 
@@ -404,4 +404,71 @@ SQL语句中的多行注释采用 /*…*/
 
 56. 全文索引要求存储引擎：MyISAM 事务要求引擎：InnoDB
 
-57. 12
+57. inner join
+
+58. [力扣182](https://leetcode-cn.com/problems/duplicate-emails/submissions/) 临时表单独用
+
+59. [力扣183](https://leetcode-cn.com/problems/customers-who-never-order/submissions/)  力扣 中的临时必须 取别名。不只 力扣需要对临时表取别名，这是 sql语法规定的。
+
+60. 
+
+61. 隔离级别
+
+    1. 隔离级别引出的问题：
+       1. 脏读：在当前会话事务未提交前 读了别人事务中未提交的操作
+       2. 不可重复读：在当前会话事务未提交前 读了别人提交的修改、删除的记录
+       3. 幻读：在当前会话事务未提交前 读到了别人插入的数据
+    2. 隔离级别划分：
+       1. 读未提交(Read uncommitted) ：会产生脏读、不可重复读、幻读
+       2. 读提交(Read committed)：会产生不可重复读、幻读
+       3. 可重复度(Repeatable read)：不会产生 脏读、不可重复读、幻读
+       4. 可串行化(Serializable)：不会产生脏读、不可重复读、幻读，并且会加锁(同一时刻，只有一个会话进入事务)
+    3. 查看、设置事务隔离级别
+       1. 查看当前会话隔离级别：select @@tx_isolation;
+       2. 查看系统当前会话隔离级别：select @@global.tx_isolation;
+       3. 设置当前会话隔离级别：set session transcation isolation level 级别名
+       4. 设置系统当前会话隔离级别：set global session transcation isolation level 级别名
+       5. 默认事务隔离界别：Repeatable read;
+    4. 事务的ACID特性
+       1. 原子性（Atomicity）
+       2. 一致性（Consistency）
+       3. 隔离性（Isolation）
+       4. 持久性（Durability）
+
+62. 存储引擎：
+
+    1. MySQL支持6中存储引擎，常用的三个：InnoDB、MyISAM、Memory
+    2. 存储引擎的命令操作
+       1. 显示所有的存储引擎：show engines;
+       2. 显示特定表的存储引擎：show table status from database_name where name='table_name' \G
+       3. 修改表的存储引擎：alter table table_name engine=MyISAM;
+
+63. 关于 语句结束符：由以上三个图对比可知：
+    “;”和“\g”没啥区别，作用完全一样，运行的结果都是以表格的形式表现出来；
+    “\G”则是相当于把表旋转90°变成了纵向；
+    当然，三者运行后的结果内容都是一样的，大家如果查询的时候结果比较多，建议用“\G”，这样看起来顺眼一点且方便读取。
+
+64. 视图：
+
+    1. 视图的操作命令
+       1. 创建视图：create view view_name as (select ename, deptno from emp);
+       2. 修改视图显示的列(相当于删除重建)：alter view view_name as (select ename from emp);
+       3. 显示视图结构：desc view_name;
+       4. 显示创建该视图的命令：**show create view view_name** (目前有了 数据库、视图的创建命令，创建表的命令：show create table table_name;)
+       5. 删除视图：drop view view_name, view_name2;
+    2. 视图文件后缀：.frm
+
+65. 用户管理
+
+    1. 用户表位置：mysql.user;
+    2. 字段：host user authentication_string
+    3. 用户管理命令：
+       1. 创建用户：create user 'user_name'@'host' identified by 'password';
+       2. 查看用户：select * from mysql.user;
+       3. 删除用户：drop user 'user_name'@'host';
+       4. 修改用户密码：
+          1. 修改自己的密码：** set password=password('密码');
+          2. 修改他人密码：**set password for 'user_name'@'host'=password('密码');**
+       5. 给用户授权：grant 权限列表 on database_name.table_name TO user_name@'host' identified by 'password';
+       6. 收回用户授权：revoke 权限列表 on database_name.table_name from 'user_name'@'host';
+       7. 刷新权限：flush privileges;
