@@ -75,34 +75,34 @@ SQL语句中的多行注释采用 /*…*/
 
 # 复习
 
-1. mysql -h host -P 3306 -u root -pN331150871;
+1. dos界面登录mysql：mysql -h host -P 3306 -u root -pN331150871;
 
-2. **create database if not exists hsp_db01 character set utf8 collate utf8_bin;**
+2. 创建数据库：**create database if not exists hsp_db01 character set utf8 collate utf8_bin;**
 
 3. **general_ci 不区分  utf8_bin 区分**
 
-4. show databases;
+4. 显示所有数据库：show databases;
 
 5. 显示创建数据库的命令：**show create database database_name;**
 
-6. **drop database if exists hsp_db01;** 
+6. 删除数据库：**drop database if exists hsp_db01;** 
 
 7. **反引号** 区分关键字 
 
-8. **datadump -u root -pN331150871 -B hsp_db01 hsp_db02 > /home/exercise/hsp_bf.sql;**
+8. 备份数据库：**datadump -u root -pN331150871 -B database_name1 database_name2 > /home/exercise/hsp_bf.sql;**
 
-9. (只能在dos界面进行操作) source /home/exercise/hsp_bf.sql;
+9. 恢复数据库：(只能在dos界面进行操作) source /home/exercise/hsp_bf.sql;
 
-10. (需要进入任意一个数据库中)  datadump -u root -pN331150871 hsp_db01 name user > /home/exercise/hsp_bftable.sql;
+10. 备份表：(需要进入任意一个数据库中)  datadump -u root -pN331150871 database_name table_name1 table_name2 > /home/exercise/hsp_bftable.sql;
 
-11. create table `user` ( 
+11. 创建表：create table `user` ( 
     int id,
     `name` verchar(20),
     ) character set utf8 collate utf8_bin engine default;
     
-12. drop table table_name;
+12. 删除表：drop table table_name;
 
-13. 无符号整数类型  INT UNSIGNED
+13. 无符号整数类型  INT UNSIGNED ----  类型 下午 进行详细复习
 
     1. tinyint 1
     2. smallint 2
@@ -168,28 +168,28 @@ SQL语句中的多行注释采用 /*…*/
        -- 感觉这不像是修改列名，更像是删除重新创建一个列，要不然也不会规定 type。如果不规定type呢？
        ~~~
 
-15. insert into table_name(col1, col2)
+15. 在表中插入数据：insert into table_name(col1, col2)
 
     values(value1, value2), (), ();
 
-16. update table_name
+16. 更新表数据：update table_name
     set col_name=value, col_name=value + 10
 
     where expr ;
 
 17. 规则：只有在创建/删除 database、table 时才会有 table。或许因为这两个命令是共享的，需要区分。
 
-18. delete from table_name where expr;
+18. 删除表记录：delete from table_name where expr;
 
-19. select distinct col_name from table_name;
+19. 查找表记录：select distinct col_name from table_name;
 
-20. select (math+english) as total from table_name;
+20. 带有表达式的查找：select (math+english) as total from table_name;
 
-21. select * from name like '韩%';
+21. like 操作符：select * from name like '韩%';
 
-22. select * from id between 10 and 90;
+22. where运算符：select * from id between 10 and 90;
 
-23. select * from student order by col_name desc/asc;
+23. 排序：select * from student order by col_name desc/asc;
 
 24. 合计 / 统计函数
 
@@ -199,7 +199,7 @@ SQL语句中的多行注释采用 /*…*/
     4. select max(col_name) as 
     5. select min(col_name) as 1
 
-25. select * from table_name group by col1, col2 having expr;
+25. 分组：select * from table_name group by col1, col2 having expr;
 
 26. 字符串相关函数
 
@@ -210,7 +210,7 @@ SQL语句中的多行注释采用 /*…*/
     5. 从左、右取: left(str, num)  right(str, num)
     6. 长度：length(str)
     7. 替换：replace(str, search_str, replace_str);
-    8. 比较：strcap(string1, string2);
+    8. 比较大小：strcap(string1, string2);
     9. 截取：substring(str, head, length);
     10. 去空格：ltrim(str)  rtrim(str)  trim(str)
 
@@ -245,13 +245,13 @@ SQL语句中的多行注释采用 /*…*/
 
 30. 加密和系统函数
 
-    1. 查询用户：user()
-    2. 查询使用的数据库：**datebase()**
-    3. MD5加密：md('123')  
+    1. 查询登录用户：user()
+    2. 查询使用的数据库：select **datebase()**;
+    3. MD5加密：md5('123')  
        1. 用户密码管理：
        2. 先创建 char(32) not null default '';
-       3. 插入 insert users values('hsp', MD('password'));
-       4. 登录时的查找：select * from users where name='hsp' and MD('输入的密码')=MD('password');
+       3. 插入 insert users values('hsp', MD5('password'));
+       4. 登录时的查找：select * from users where name='hsp' and MD5('输入的密码')=MD5('password');
     4. password加密：password('hsp');
 
 31. 流程控制函数
@@ -441,7 +441,7 @@ SQL语句中的多行注释采用 /*…*/
     2. 存储引擎的命令操作
        1. 显示所有的存储引擎：show engines;
        2. 显示特定表的存储引擎：show table status from database_name where name='table_name' \G
-       3. 修改表的存储引擎：alter table table_name engine=MyISAM;
+       3. 修改表的存储引擎：alter table table_name engine=MyISAM;    ----  和修改表的 字符集有点像
 
 63. 关于 语句结束符：由以上三个图对比可知：
     “;”和“\g”没啥区别，作用完全一样，运行的结果都是以表格的形式表现出来；
@@ -462,7 +462,8 @@ SQL语句中的多行注释采用 /*…*/
 
     1. 用户表位置：mysql.user;
     2. 字段：host user authentication_string
-    3. 用户管理命令：
+    3. 
+    4. 用户管理命令：
        1. 创建用户：create user 'user_name'@'host' identified by 'password';
        2. 查看用户：select * from mysql.user;
        3. 删除用户：drop user 'user_name'@'host';
@@ -471,4 +472,4 @@ SQL语句中的多行注释采用 /*…*/
           2. 修改他人密码：**set password for 'user_name'@'host'=password('密码');**
        5. 给用户授权：grant 权限列表 on database_name.table_name TO user_name@'host' identified by 'password';
        6. 收回用户授权：revoke 权限列表 on database_name.table_name from 'user_name'@'host';
-       7. 刷新权限：flush privileges;1
+       7. 刷新权限：flush privileges;
