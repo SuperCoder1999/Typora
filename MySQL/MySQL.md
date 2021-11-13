@@ -472,4 +472,4 @@ SQL语句中的多行注释采用 /*…*/
           2. 修改他人密码：**set password for 'user_name'@'host'=password('密码');**
        5. 给用户授权：grant 权限列表 on database_name.table_name TO user_name@'host' identified by 'password';
        6. 收回用户授权：revoke 权限列表 on database_name.table_name from 'user_name'@'host';
-       7. 刷新权限：flush privileges;
+       7. 刷新权限：flush privileges;1
