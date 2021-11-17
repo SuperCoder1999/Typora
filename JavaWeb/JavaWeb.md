@@ -227,4 +227,4 @@
 
 ###### 相关术语
 
-1. particial gc ： 1
+1. particial gc ： 12
