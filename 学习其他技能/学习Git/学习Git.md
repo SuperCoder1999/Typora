@@ -252,3 +252,15 @@ git config --global user.name "用户名"--引号、横线可省略
       2. ssh 链接很稳定.
 
    2. git pull .使用https和ssh链接都可以 (将https改成git的链接不能用于pull)
+   
+5. 更改远程仓库 (就是更改:git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git)
+
+   ```
+   方法一：
+   git remote set-url origin git@192.168.1.18:mStar/OTT-dual/K3S/supernova
+   方法二：
+   git remote rm origin 
+   git remote add origin git@192.168.1.18:mStar/OTT-dual/K3S/supernova
+   ```
+
+   
