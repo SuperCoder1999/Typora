@@ -95,7 +95,7 @@ git config --global user.name "用户名"--引号、横线可省略
    3. 切换分支
       1. 命令：git checkout dev
       2. 切换分支就是切换一个环境，在dev分支中开发时不影响master分支上的内容
-         1. 示例：从master分支切换到dev分支进行修改，再生成版本，此时查看历史版本，会发现此次版本在dev分支上。切换回master分支，打开文件，文件没有被修改
+         1. 示例：从mas git@github.com:SuperCoder1999/Spring5_sgg.gitter分支切换到dev分支进行修改，再生成版本，此时查看历史版本，会发现此次版本在dev分支上。切换回master分支，打开文件，文件没有被修改
    4. 合并分支（注意需要在master上-即在需要修改的分支上获取修改内容）
       1. 命令：git merge 分支名
    5. 删除分支
@@ -155,3 +155,100 @@ git config --global user.name "用户名"--引号、横线可省略
 
 
 
+
+
+---
+
+# 使用过程中的问题解决
+
+1. git软件的默认分支名是master,导致git push 后在remote上创建了master分支.
+   解决方法:1.要么在装git时,默认名称更改为main,要么使用git branch -m mater main更改已经存在的名称
+
+2. 创建新仓库后的命令
+
+   ```
+   echo "# test2" >> README.md
+   git init
+   git add README.md
+   git commit -m "first commit"
+   git branch -M main
+   git remote add origin git@github.com:SuperCoder1999/test2.git
+   git push -u origin main
+   
+   git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+---
+
+3. 如何在新电脑上，操作已经存在的数据库：
+
+   > 一：使用ssh
+   > (前提，初始化ssh：先让本地公钥，被github认可，之后可以用ssh的链接，免密操作以下步骤)
+   > 1.git init
+   > 初始化 本地库
+   > 2.$ git pull git@github.com:SuperCoder1999/LanQiaoCup.git(https链接不能用于pull)
+   > 从远程库 拉代码，（必须要的）(这里也可以用git clone,之后的操作和下面一样)
+   >
+   > 3.git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git
+   > 获取远程库操作权限
+   > 4.git push --set-upstream origin master
+   > 设置 本地库上传 的分支(master,看remote上的默认分支名进行更改)
+   > 5.git add . ->git commit -m 1 -> git push就可以正常使用了。
+
+   > 二：直接用http链接
+   > 1.git init
+   > 初始化 本地库
+   > 2.$ git pull https://github.com/SuperCoder1999/Tic-tac-toe.git
+   > 从远程库 拉代码，（必须要的）
+   > 3.git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git
+   > 获取远程库操作权限 (这里如果用http链接, 需要登录)
+   > 4.git push --set-upstream origin master
+   > 设置 本地库上传 的分支
+   > 此时就会 要求登录 GitHub(ssh就是帮助免去这一步的)。登陆方式有两种，我暂时用了网页登录。
+   > 5.git add . ->git commit -m 1 -> git push就可以正常使用了。
+
+   ```git
+   Pinocchio@PinocchioPC MINGW64 /f/Github/LanQiaoCup
+   $ git init (初始化文件夹)
+   Initialized empty Git repository in F:/Github/LanQiaoCup/.git/
+   
+   Pinocchio@PinocchioPC MINGW64 /f/Github/LanQiaoCup (master)
+   $ git pull git@github.com:SuperCoder1999/LanQiaoCup.git (拉取代码)
+   remote: Enumerating objects: 43, done.
+   remote: Counting objects: 100% (43/43), done.
+   remote: Compressing objects: 100% (29/29), done.
+   remote: Total 43 (delta 8), reused 43 (delta 8), pack-reused 0
+   Unpacking objects: 100% (43/43), 1.05 MiB | 528.00 KiB/s, done.
+   From github.com:SuperCoder1999/LanQiaoCup
+    * branch            HEAD       -> FETCH_HEAD
+   
+   Pinocchio@PinocchioPC MINGW64 /f/Github/LanQiaoCup (master)
+   $ git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git (获取操作权限)
+   
+   Pinocchio@PinocchioPC MINGW64 /f/Github/LanQiaoCup (master)
+   $ git push
+   fatal: The current branch master has no upstream branch.
+   To push the current branch and set the remote as upstream, use
+   
+   git push --set-upstream origin master
+   
+   Pinocchio@PinocchioPC MINGW64 /f/Github/LanQiaoCup (master)
+   $  git push --set-upstream origin master (设置提交的分支)
+   ```
+
+4. 拉取代码的方式
+
+   1. git clone 可以用 http 和 ssh链接 
+
+      1. http可能因为网络原因clone失败.解决方法是将https换成git
+
+         ```
+         git clone https://github.com/SuperCoder1999/Spring5_sgg.git(连接失败)
+         git clone git://github.com/SuperCoder1999/Spring5_sgg.git
+         ```
+
+      2. ssh 链接很稳定.
+
+   2. git pull .使用https和ssh链接都可以 (将https改成git的链接不能用于pull)

@@ -1,4 +1,5 @@
 1. localMySQL账户：root 密码：N331150871
+2. Pinocchio电脑的MySQL: root N331150871
 2. 阿里云MySQL:root N331150871
 
 ---
