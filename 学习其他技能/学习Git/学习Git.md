@@ -263,4 +263,4 @@ git config --global user.name "用户名"--引号、横线可省略
    git remote add origin git@192.168.1.18:mStar/OTT-dual/K3S/supernova
    ```
 
-   
+6. 偶然情况: git clone后,直接可以git push
