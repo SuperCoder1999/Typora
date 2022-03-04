@@ -193,7 +193,7 @@ git config --global user.name "用户名"--引号、横线可省略
    >
    > 3.git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git
    > 获取远程库操作权限
-   > 4.git push --set-upstream origin master
+   > 4.git push --set-upstream origin main
    > 设置 本地库上传 的分支(master,看remote上的默认分支名进行更改)
    > 5.git add . ->git commit -m 1 -> git push就可以正常使用了。
 
@@ -204,7 +204,7 @@ git config --global user.name "用户名"--引号、横线可省略
    > 从远程库 拉代码，（必须要的）
    > 3.git remote add origin git@github.com:SuperCoder1999/LanQiaoCup.git
    > 获取远程库操作权限 (这里如果用http链接, 需要登录)
-   > 4.git push --set-upstream origin master
+   > 4.git push --set-upstream origin main
    > 设置 本地库上传 的分支
    > 此时就会 要求登录 GitHub(ssh就是帮助免去这一步的)。登陆方式有两种，我暂时用了网页登录。
    > 5.git add . ->git commit -m 1 -> git push就可以正常使用了。
