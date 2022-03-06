@@ -155,7 +155,11 @@ git config --global user.name "用户名"--引号、横线可省略
 
 
 
+---
 
+# 常用命令:
+
+![preview](https://pic4.zhimg.com/v2-024f245887c2ac566c40e4685699d89b_r.jpg)
 
 ---
 
