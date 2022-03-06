@@ -162,8 +162,11 @@ git config --global user.name "用户名"--引号、横线可省略
 # 使用过程中的问题解决
 
 1. git软件的默认分支名是master,导致git push 后在remote上创建了master分支.
-   解决方法:1.要么在装git时,默认名称更改为main,要么使用git branch -m master main更改已经存在的名称
+   解决方法:
 
+   1. 要么在装git时,默认名称更改为main,要么使用git branch -m master main更改已经存在的名称
+   2. 修改全局:git config --global init.defaultBranch main
+   
 2. 创建新仓库后的命令
 
    ```
