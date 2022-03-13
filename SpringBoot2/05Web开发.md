@@ -2,7 +2,7 @@
 
 # 
 
-<img src="06.assets/1608701608750-77d03c43-c254-4132-acdf-843958446b27.png" alt="img" style="zoom: 67%;" />
+<img src="05Web开发.assets/1608701608750-77d03c43-c254-4132-acdf-843958446b27.png" alt="img" style="zoom: 67%;" />
 
 # 
 
@@ -64,7 +64,7 @@ The auto-configuration adds the following features on top of Spring’s defaults
 
 只要静态资源放在类路径下： called `/static` (or `/public` or `/resources` or `/META-INF/resources`
 
-![image-20220312233127714](06.assets/image-20220312233127714.png)
+![image-20220312233127714](05Web开发.assets/image-20220312233127714.png)
 
 访问 ： 当前项目根路径/ + 静态资源名 : localhost:8080/timg.gif
 
@@ -82,10 +82,10 @@ The auto-configuration adds the following features on top of Spring’s defaults
 =========application.yaml=============
 spring:
   mvc:
-    static-path-pattern: /res/**
+    static-path-pattern: /res/** # 此时访问静态资源时必须添加/res/路径
 
   resources:
-    static-locations: [classpath:/haha/]
+    static-locations: [classpath:/haha/] # 更改默认的静态资源路径
 ```
 
 ### 2、静态资源访问前缀
@@ -95,14 +95,14 @@ spring:
 ```yaml
 spring:
   mvc:
-    static-path-pattern: /res/**
+    static-path-pattern: /res/** # 添加了访问路径 前缀
 ```
 
 当前项目 + static-path-pattern + 静态资源名 = 静态资源文件夹下找
 
 ### 3、webjar
 
-自动映射 /[webjars](http://localhost:8080/webjars/jquery/3.5.1/jquery.js)/**
+自动映射 /[webjars](http://localhost:8080/webjars/jquery/3.5.1/jquery.js)/** :把css/js弄成jar包.引入jar包就可以调用(演示了网页访问该jar包下的内容)
 
 https://www.webjars.org/
 
@@ -116,13 +116,16 @@ https://www.webjars.org/
 
 访问地址：[http://localhost:8080/webjars/**jquery/3.5.1/jquery.js**](http://localhost:8080/webjars/jquery/3.5.1/jquery.js)   后面地址要按照依赖里面的包路径
 
+就可以访问jquery.js内的内容
+
 
 
 ## 2.2、欢迎页支持
 
-- 静态资源路径下  index.html
+访问url: http://localhost:8080/
 
-- - 可以配置静态资源路径
+- 方法一: 静态资源路径下  index.html 
+  - 可以配置静态资源路径
   - 但是不可以配置静态资源的访问前缀。否则导致 index.html不能被默认访问(只针对index.html)
 
 ```yaml
@@ -134,32 +137,30 @@ spring:
     static-locations: [classpath:/haha/]
 ```
 
-- controller能处理/index
+- 方法二: controller能处理/index
 
 ## 2.3、自定义 `Favicon`
 
-favicon.ico 放在静态资源目录下即可。
+(自定义网站图标)
+
+命名为favicon.ico 放在静态资源目录下即可。
 
 ```yaml
 spring:
 #  mvc:
-#    static-path-pattern: /res/**   这个会导致 Favicon 功能失效
+#    static-path-pattern: /res/**   这个也会导致 Favicon 功能失效
 ```
-
-
-
-
 
 ## 2.4、静态资源配置原理
 
 - SpringBoot启动默认加载  xxxAutoConfiguration 类（自动配置类）
-- SpringMVC功能的自动配置类 WebMvcAutoConfiguration，生效
+- SpringMVC功能的自动配置类就是: WebMvcAutoConfiguration，生效
 
 ```java
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnWebApplication(type = Type.SERVLET)
-@ConditionalOnClass({ Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class })
-@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)
+@ConditionalOnWebApplication(type = Type.SERVLET) // 我们创建的就是servlet应用.所以满足
+@ConditionalOnClass({ Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class }) //这几个就是导入的org.springframework.spring-webmvc.5.2.9RELEASE包下面的类
+@ConditionalOnMissingBean(WebMvcConfigurationSupport.class) // 全面接管SpringMVC
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
 @AutoConfigureAfter({ DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,
 		ValidationAutoConfiguration.class })
@@ -176,29 +177,19 @@ public class WebMvcAutoConfiguration {}
 	public static class WebMvcAutoConfigurationAdapter implements WebMvcConfigurer {}
 ```
 
-- 配置文件的相关属性和xxx进行了绑定。WebMvcProperties==**spring.mvc**、ResourceProperties==**spring.resources**
-
-
-
-
-
-
-
-
-
-
+- 配置文件的相关属性和xxx进行了绑定。WebMvcProperties与前缀为**spring.mvc**的进行绑定、ResourceProperties与前缀为**spring.resources**的进行绑定
 
 #### 1、配置类只有一个有参构造器
 
 ```java
-	//有参构造器所有参数的值都会从容器中确定
-//ResourceProperties resourceProperties；获取和spring.resources绑定的所有的值的对象
-//WebMvcProperties mvcProperties 获取和spring.mvc绑定的所有的值的对象
-//ListableBeanFactory beanFactory Spring的beanFactory
-//HttpMessageConverters 找到所有的HttpMessageConverters
-//ResourceHandlerRegistrationCustomizer 找到 资源处理器的自定义器。=========
+//有参构造器所有参数的值都会从容器中确定(因为EnableConfigurationProperties还会把绑定了参数的类添加到容器中)
+//ResourceProperties resourceProperties；从容器中获取和前缀为spring.resources绑定的所有的值的对象
+//WebMvcProperties mvcProperties 从容器中获取和前缀为spring.mvc绑定的所有的值的对象
+//ListableBeanFactory beanFactory 从容器中获取Spring的beanFactory
+//HttpMessageConverters 从容器中找到所有的HttpMessageConverters
+//ResourceHandlerRegistrationCustomizer 从容器中找到 资源处理器的自定义器。=========重点
 //DispatcherServletPath  
-//ServletRegistrationBean   给应用注册Servlet、Filter....
+//ServletRegistrationBean   给应用注册原生Servlet、Filter....
 	public WebMvcAutoConfigurationAdapter(ResourceProperties resourceProperties, WebMvcProperties mvcProperties,
 				ListableBeanFactory beanFactory, ObjectProvider<HttpMessageConverters> messageConvertersProvider,
 				ObjectProvider<ResourceHandlerRegistrationCustomizer> resourceHandlerRegistrationCustomizerProvider,
@@ -214,45 +205,40 @@ public class WebMvcAutoConfiguration {}
 		}
 ```
 
-
-
-
-
 #### 2、资源处理的默认规则
 
 ```java
 @Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
-			if (!this.resourceProperties.isAddMappings()) {
+			if (!this.resourceProperties.isAddMappings()) {//add-mappings: false 禁用所有静态资源规则
 				logger.debug("Default resource handling disabled");
 				return;
 			}
-			Duration cachePeriod = this.resourceProperties.getCache().getPeriod();
+			Duration cachePeriod = this.resourceProperties.getCache().getPeriod();//配置浏览器中静态资源的缓存时间 秒
 			CacheControl cacheControl = this.resourceProperties.getCache().getCachecontrol().toHttpCacheControl();
 			//webjars的规则
             if (!registry.hasMappingForPattern("/webjars/**")) {
 				customizeResourceHandlerRegistration(registry.addResourceHandler("/webjars/**")
+                          //当访问webjars包下面的静态资源时,自动添加/META-INF/resources/webjars/
+                          //所以url只需要: (http://localhost:8080/webjars/jquery/3.5.1/jquery.js)
 						.addResourceLocations("classpath:/META-INF/resources/webjars/")
+                          //浏览器缓存时间,上面Duration cachePeriod = this.resourceProperties.getCache().getPeriod();设置的时间
 						.setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));
 			}
             
-            //
+            //处理静态资源的情况
 			String staticPathPattern = this.mvcProperties.getStaticPathPattern();
 			if (!registry.hasMappingForPattern(staticPathPattern)) {
 				customizeResourceHandlerRegistration(registry.addResourceHandler(staticPathPattern)
 						.addResourceLocations(getResourceLocations(this.resourceProperties.getStaticLocations()))
+                          //浏览器缓存时间
 						.setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));
 			}
 		}
-spring:
-#  mvc:
-#    static-path-pattern: /res/**
-
-  resources:
-    add-mappings: false   禁用所有静态资源规则
+=======================ResourceProperties类中的静态资源路径配置信息(对应23行的代码)=====================
+    
 @ConfigurationProperties(prefix = "spring.resources", ignoreUnknownFields = false)
 public class ResourceProperties {
-
 	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
 			"classpath:/resources/", "classpath:/static/", "classpath:/public/" };
 
@@ -263,12 +249,40 @@ public class ResourceProperties {
 	private String[] staticLocations = CLASSPATH_RESOURCE_LOCATIONS;
 ```
 
+```yaml
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+    contentnegotiation:
+      favor-parameter: true
+  #  mvc:
+#    static-path-pattern: /res/**
+# 静态资源访问前缀(这个会导致welcome page/自定义favicon功能失效)
+
+#  resources:
+#    static-locations: [classpath:/haha/] 
+# 就是更改String staticPathPattern = this.mvcProperties.getStaticPathPattern(); 静态资源路径
+#    add-mappings: true
+# false 禁用所有静态资源规则(xml中的配置即:spring.resources.add-mappings=false,
+# 验证了: ResourceProperties resourceProperties从容器中获取和前缀为spring.resources绑定的所有的值的对象)
+
+#    cache:
+#      period: 11000
+# 配置浏览器中静态资源的缓存时间 秒
+#server:
+#  servlet:
+#    context-path: /world
+    
+```
+
 
 
 #### 3、欢迎页的处理规则
 
 ```java
-	HandlerMapping：处理器映射。保存了每一个Handler能处理哪些请求。	
+	//HandlerMapping：处理器映射。保存了每一个Handler能处理哪些请求。	
 
 	@Bean
 		public WelcomePageHandlerMapping welcomePageHandlerMapping(ApplicationContext applicationContext,
@@ -280,7 +294,7 @@ public class ResourceProperties {
 			welcomePageHandlerMapping.setCorsConfigurations(getCorsConfigurations());
 			return welcomePageHandlerMapping;
 		}
-
+//===================欢迎页不能用自定义路径的原因=================
 	WelcomePageHandlerMapping(TemplateAvailabilityProviders templateAvailabilityProviders,
 			ApplicationContext applicationContext, Optional<Resource> welcomePage, String staticPathPattern) {
 		if (welcomePage.isPresent() && "/**".equals(staticPathPattern)) {
@@ -289,7 +303,7 @@ public class ResourceProperties {
 			setRootViewName("forward:index.html");
 		}
 		else if (welcomeTemplateExists(templateAvailabilityProviders, applicationContext)) {
-            // 调用Controller  /index
+            // 如果不是/**,就调用Controller  处理/index
 			logger.info("Adding welcome page template: index");
 			setRootViewName("index");
 		}
@@ -297,6 +311,10 @@ public class ResourceProperties {
 ```
 
 #### 4、favicon
+
+```java
+//favicon是由浏览器自动访问项目的静态资源,浏览器访问路径不会带有前缀,所以我们不能设置前缀
+```
 
 # 3、请求参数处理
 
@@ -309,11 +327,10 @@ public class ResourceProperties {
 
 - - *以前：**/getUser*  *获取用户*    */deleteUser* *删除用户*   */editUser*  *修改用户*      */saveUser* *保存用户*
   - *现在： /user*    *GET-**获取用户*    *DELETE-**删除用户*     *PUT-**修改用户*      *POST-**保存用户*
-  - 核心Filter；HiddenHttpMethodFilter
-
-- - - 用法： 表单method=post，隐藏域 _method=put
-    - SpringBoot中手动开启
-
+  - 核心Filter；HiddenHttpMethodFilter(WebMvcAutoConfiguration中配置了一个OrderedHiddenHttpMethodFilter)
+  - 用法：1.  表单method=post，隐藏域 _method=put ()
+    - 2. SpringBoot中手动开启
+  
 - - 扩展：如何把_method 这个名字换成我们自己喜欢的。
 
 ```java
@@ -338,7 +355,13 @@ public class ResourceProperties {
         return "DELETE-张三";
     }
 
-
+	//WebMvcAutoConfiguration中配置了一个OrderedHiddenHttpMethodFilter.不过缺少一个条件就是配不配置spring.mvc.hiddenmethod.filter.enabled
+//ConditionalOnProperty的配置规则是:
+/*
+配置属性a: 1:不配置a      matchifmissing=false 不满足      matchifmissing=true 满足 
+          2:配置a=false  matchifmissing=false 不满足      matchifmissing=true 不满足 
+          3:配置a=true   matchifmissing=false 满足        matchifmissing=true 满足
+*/
 	@Bean
 	@ConditionalOnMissingBean(HiddenHttpMethodFilter.class)
 	@ConditionalOnProperty(prefix = "spring.mvc.hiddenmethod.filter", name = "enabled", matchIfMissing = false)
@@ -346,8 +369,7 @@ public class ResourceProperties {
 		return new OrderedHiddenHttpMethodFilter();
 	}
 
-
-//自定义filter
+//自定义filter,此时根据ConditionalOnMissingBean就优先采用自定义的Filter
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
         HiddenHttpMethodFilter methodFilter = new HiddenHttpMethodFilter();
@@ -360,21 +382,18 @@ Rest原理（表单提交要使用REST的时候）
 
 - 表单提交会带上**_method=PUT**
 - **请求过来被**HiddenHttpMethodFilter拦截
-
-- - 请求是否正常，并且是POST
-
-- - - 获取到**_method**的值。
-    - 兼容以下请求；**PUT**.**DELETE**.**PATCH**
-    - **原生request（post），包装模式requesWrapper重写了getMethod方法，返回的是传入的值。**
-    - **过滤器链放行的时候用wrapper。以后的方法调用getMethod是调用****requesWrapper的。**
+  - 请求是否正常，并且是POST
+  - 获取到**_method**的值。
+  - 兼容以下请求；**PUT**.**DELETE**.**PATCH**
+  - **原生request（post方式），包装模式requesWrapper重写了getMethod方法，返回的是传入的_method值。**
+  - **过滤器链放行的时候用wrapper作为request放行。以后的方法调用getMethod是调用requesWrapper的getMethod()方法**
 
 
 
 **Rest使用客户端工具，**
 
 - 如PostMan直接发送Put、delete等方式请求，无需Filter。
-
-
+- 相比较下,浏览器提交的表单不能发送Put、delete等方式请求
 
 ```yaml
 spring:
@@ -386,9 +405,13 @@ spring:
 
 ### 2、请求映射原理
 
-![img](https://cdn.nlark.com/yuque/0/2020/png/1354552/1603181171918-b8acfb93-4914-4208-9943-b37610e93864.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_27%2Ctext_YXRndWlndS5jb20g5bCa56GF6LC3%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+[httpServletBean没有重写doGet/doPost]
 
-SpringMVC功能分析都从 org.springframework.web.servlet.DispatcherServlet-》doDispatch（）
+HttpServlet.doGet()->FrameworkServlet.processRequest()->FrameworkServlet.doService()->DispatcherServlet.doService()->DispatcherServlet.doDispatch(做请求派发)
+
+![1603181171918-b8acfb93-4914-4208-9943-b37610e93864](05Web开发.assets/1603181171918-b8acfb93-4914-4208-9943-b37610e93864.png)
+
+SpringMVC功能分析都从 org.springframework.web.servlet.DispatcherServlet->doDispatch（）[每个请求都会调用它]
 
 
 
@@ -405,7 +428,7 @@ protected void doDispatch(HttpServletRequest request, HttpServletResponse respon
 			Exception dispatchException = null;
 
 			try {
-				processedRequest = checkMultipart(request);
+				processedRequest = checkMultipart(request);//检查文件上传
 				multipartRequestParsed = (processedRequest != request);
 
 				// 找到当前请求使用哪个Handler（Controller的方法）处理
@@ -414,7 +437,7 @@ protected void doDispatch(HttpServletRequest request, HttpServletResponse respon
                 //HandlerMapping：处理器映射。/xxx->>xxxx
 ```
 
-![img](https://cdn.nlark.com/yuque/0/2020/png/1354552/1603181460034-ba25f3c0-9cfd-4432-8949-3d1dd88d8b12.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_YXRndWlndS5jb20g5bCa56GF6LC3%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](05Web开发.assets/1603181460034-ba25f3c0-9cfd-4432-8949-3d1dd88d8b12.png)
 
 **RequestMappingHandlerMapping**：保存了所有@RequestMapping 和handler的映射规则。
 
@@ -849,13 +872,13 @@ public static boolean isSimpleValueType(Class<?> type) {
 
 @FunctionalInterface**public interface** Converter<S, T>
 
-### ![img](06.assets/1603337871521-25fc1aa1-133a-4ce0-a146-d565633d7658.png)
+### ![img](05Web开发.assets/1603337871521-25fc1aa1-133a-4ce0-a146-d565633d7658.png)
 
 
 
 
 
-![img](06.assets/1603338486441-9bbd22a9-813f-49bd-b51b-e66c7f4b8598.png)
+![img](05Web开发.assets/1603338486441-9bbd22a9-813f-49bd-b51b-e66c7f4b8598.png)
 
 
 
